@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h1>Add a New Posting!</h1>
+    <form method='post'>
+        <label>
+            New Blog Title:
+            <input type="text" name='title' value="{{request.form['title']}}"/>
+        </label>
+        {% if title_error %}
+        <span>{{ title_error }}</span>
+        {% endif %}
+        <label>
+            Blog Content:
+            <input type="text" name="form" value="{{request.form['form']}}"/>
+        </label>
+        {% if content_error %}
+        <span>{{ content_error }}</span>
+        {% endif %}
+        <input type="submit" value='Publish Post' />
+    </form>
+
+{% endblock %}
