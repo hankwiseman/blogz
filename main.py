@@ -23,10 +23,17 @@ class Blog(db.Model):
 def index():
 
     blogs = Blog.query.all()
+    
+    blog_id = request.args.get('id')
+    
+    if blog_id:
+        blog_post = Blog.query.get(blog_id)
+        return render_template('blog_post.html',blog_post=blog_post)
+
     return render_template('blog.html',title="Blog List", 
         blogs=blogs)
 
-
+# Blog.query.filter_by(id=int(request.args.get('id'))).all()
 @app.route('/newpost', methods=['POST', 'GET'])
 def delete_task():
 
@@ -42,7 +49,8 @@ def delete_task():
         new_blog = Blog(title =blog_title, body =blog_content)
         db.session.add(new_blog)
         db.session.commit()
-        return redirect('/')
+        new_blog_link = '/?id='+str(new_blog.id)
+        return redirect(new_blog_link)
 
     return render_template('newpost.html')
 
