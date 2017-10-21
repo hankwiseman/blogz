@@ -4,9 +4,17 @@
         <title>{{title}}</title>
     </head>
 <body>
-    <h1>Build-A-Blog!</h1>
+    <h1>Blogz!</h1>
     <a href= "/newpost") >Add a new blog post!</a>
     <a href= "/") >Blog Listings</a>
+
+    {% with messages = get_flashed_messages(with_categories=True) %}
+    <ul>
+    {% for category,message in messages %}
+        <li class="{{category}}">{{message}}</li>
+    {% endfor %}
+    </ul>
+    {% endwith %}
 
     {% block content %}
     {% endblock %}
