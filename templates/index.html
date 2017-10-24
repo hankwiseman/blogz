@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+    
+
+    <hr />
+
+        <ul>
+            Authors:
+            {% for user in users %}
+            <li>
+                 {{user.username}}
+            </li>
+            {% endfor %}
+        </ul>
+
+    <hr />
+
+{% endblock %}

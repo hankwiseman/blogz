@@ -34,7 +34,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup']
+    allowed_routes = ['login', '/', 'signup']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -53,6 +53,10 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    del session['username']
+    return redirect('/blog')
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -88,7 +92,7 @@ def signup():
 
     return render_template('signup.html')
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/blog', methods=['POST', 'GET'])
 def index():
 
     blogs = Blog.query.all()
@@ -125,6 +129,11 @@ def delete_task():
 
     return render_template('newpost.html')
 
+@app.route('/', methods=['POST', 'GET'])
+def user_list():
+    users = User.query.all()
+
+    return render_template('index.html',users=users)
 
 if __name__ == '__main__':
     app.run()
