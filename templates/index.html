@@ -9,7 +9,7 @@
             Authors:
             {% for user in users %}
             <li>
-                 {{user.username}}
+                    <a href="/blog?user={{user.id}}"> {{user.username}}      
             </li>
             {% endfor %}
         </ul>

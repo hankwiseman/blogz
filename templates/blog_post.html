@@ -8,8 +8,13 @@
     <p>
         Title:
         {{blog_post.title}}
+    </p>
+    <p>
         Body:
         {{blog_post.body}}
+    </p>
+    <p>
+        Author: <a href="/blog?user={{blog_post.owner.id}}"> {{blog_post.owner.username}}
     </p>
                 
 
