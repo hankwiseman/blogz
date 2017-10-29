@@ -34,7 +34,7 @@ class User(db.Model):
 
 @app.before_request
 def require_login():
-    allowed_routes = ['login', 'signup']
+    allowed_routes = ['login', 'user_list', 'signup', 'index']
     if request.endpoint not in allowed_routes and 'username' not in session:
         return redirect('/login')
 
@@ -53,6 +53,10 @@ def login():
 
     return render_template('login.html')
 
+@app.route('/logout')
+def logout():
+    del session['username']
+    return redirect('/blog')
 
 @app.route('/signup', methods=['POST', 'GET'])
 def signup():
@@ -86,13 +90,19 @@ def signup():
             # TODO - user better response messaging
             return "<h1>Duplicate user</h1>"
 
-    return render_template('signup.html')
+    return render_template('newpost.html')
 
-@app.route('/', methods=['POST', 'GET'])
+@app.route('/blog', methods=['POST', 'GET'])
 def index():
 
     blogs = Blog.query.all()
     
+    userid = request.args.get('user')
+    if userid:
+        blog_post = Blog.query.filter_by(owner_id=userid).all()
+        return render_template('blog.html',blogs=blog_post)
+
+
     blog_id = request.args.get('id')
     
     if blog_id:
@@ -120,11 +130,16 @@ def delete_task():
         new_blog = Blog(title =blog_title, body =blog_content, owner = owner)
         db.session.add(new_blog)
         db.session.commit()
-        new_blog_link = '/?id='+str(new_blog.id)
+        new_blog_link = '/blog?id='+str(new_blog.id)
         return redirect(new_blog_link)
 
     return render_template('newpost.html')
 
+@app.route('/', methods=['POST', 'GET'])
+def user_list():
+    users = User.query.all()
+
+    return render_template('index.html',users=users)
 
 if __name__ == '__main__':
     app.run()
