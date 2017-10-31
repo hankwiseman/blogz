@@ -77,7 +77,7 @@ def signup():
 
         if password != verify:
             verify_error = "The passwords do not match"
-            return render_template('index.html', verify_error=verify_error)
+            return render_template('signup.html', verify_error=verify_error)
 
         existing_user = User.query.filter_by(username=username).first()
         if not existing_user:
@@ -85,12 +85,12 @@ def signup():
             db.session.add(new_user)
             db.session.commit()
             session['username'] = username
-            return redirect('/login')
+            return render_template('newpost.html')
         else:
             # TODO - user better response messaging
             return "<h1>Duplicate user</h1>"
 
-    return render_template('newpost.html')
+    return render_template('signup.html')
 
 @app.route('/blog', methods=['POST', 'GET'])
 def index():
